@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2017  Karol Preiskorn.
+   
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+ -->
+
 <project name="upload" default="upload">
 	<target name="upload">
 		<ftp server="inact" port="21" remotedir="/Zabbix_JSON" userid="inact" password="babilon5" passive="yes" depends="yes" binary="no">
 			<fileset dir=".">
-				<include name="**/*.php"/>
+				<include name="**"/>
 			</fileset>
 		</ftp>
 	</target>

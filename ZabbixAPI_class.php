@@ -2,7 +2,8 @@
 /**
  * ZabbixAPI_class.php Copyright 2017 by Karol Preiskorn
  *
- * @varsion 18.03.2017 21:35:17 Karol Preiskorn Init
+ * @version 18.03.2017 21:35:17 Karol Preiskorn Init
+ * @version 19.03.2017 16:37:59 KPreiskorn ZabbixAPI_class.php Export to BB
  *
  */
 // load ZabbixApi
@@ -57,10 +58,24 @@ function obsafe_print_r($var, $return = false, $html = true, $level = 0) {
 	else
 		echo "<pre>" . $output . "</pre>";
 }
-function print_table($title, $count) {
-	print ('<div class="panel panel-default">') ;
-	print ('<div class="panel-heading">' . $title . ' <a href="#"> <span class="badge">' . $count . '</span></a></div>') ;
-	print ("<table class='table table-condensed table-hover'>") ;
+/**
+ *
+ * Generate bootstrap table with headers and coun of elements
+ *
+ * @param string $title
+ * @param unknown $count
+ * @param unknown $id
+ */
+function print_table_header($title, $count, $headers, $id) {
+	print ('<div class="panel panel-default">' . "\n") ;
+	print ('<div class="panel-heading">' . $title . ' <a href="#"> <span class="badge">' . $count . '</span></a></div>' . "\n") ;
+	print ("<table id='" . $id . "' class='table table-striped table-bordered'>" . "\n") ;
+
+	print ("<thead><tr>" . "\n") ;
+	foreach ( $headers as $header ) {
+		print ("<th>" . $header . "</th>" . "\n") ;
+	}
+	print ("</tr>\n</thead>\n<tbody>" . "\n") ;
 }
 
 try {
@@ -68,23 +83,11 @@ try {
 	$api = new ZabbixApi ( $uri, $username, $password );
 
 	// get all graphs
-	$graphs = $api->graphGet ();
-	// print_r2 ( $graphs [0] );
-	print_table ( 'Graph', count ( $graphs ) );
-
-	// print all graph IDs
-	foreach ( $graphs as $graph ) {
-		printf ( "<tr><td>%8d</td><td>%s</td><tr>\n", $graph->graphid, $graph->name );
-	}
-	print ("</table></div>") ;
-
-	// get all graphs
 	$alerts = $api->alertGet ();
 	// print_r2 ( $graphs [0] );
 
 	arsort ( $alerts );
 
-	print_table ( 'Alerts', count ( $alerts ) );
 	$headers = array (
 			"Alert Id",
 			"Event Id",
@@ -93,12 +96,10 @@ try {
 			"Subject",
 			"Message"
 	);
-	print ("<thead><tr>") ;
-	foreach ( $headers as $header ) {
-		print ("<th>" . $header . "</th>") ;
-	}
-	print ("</thead></tr>") ;
-	// print all graph IDs
+
+	print_table_header ( 'Alerts', count ( $alerts ), $headers, 'alarms' );
+
+	// print all alerts
 	foreach ( $alerts as $alert ) {
 		if ($alert->sendto = "karol.preiskorn@t-mobile.pl") {
 			if (strpos ( $alert->subject, "PROBLEM:" ) !== false) {
@@ -111,13 +112,34 @@ try {
 			} else {
 				$eventid_org = "Not found Original event ID";
 			}
-			printf ( "<tr id='%s' %s><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><tr>", $alert->eventid, $alerttype, $alert->alertid, $alert->eventid, date ( "Y-m-d h:i", $alert->clock ), $alert->sendto, $alert->subject, $alert->message . " " . $eventid_org );
+			printf ( "<tr id='%s' %s><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" . "\n", $alert->eventid, $alerttype, $alert->alertid, $alert->eventid, date ( "Y-m-d h:i", $alert->clock ), $alert->sendto, $alert->subject, $alert->message . " " . $eventid_org );
 		}
 	}
-	print ("</table></div>") ;
+	print ("</tbody>\n</table>\n</div>\n") ;
 
-	print "<h1>Alerts... agian in raw</h2>";
-	obsafe_print_r ( $alerts, FALSE, TRUE );
+	// get all graphs
+	$graphs = $api->graphGet ();
+	$header_graph = array (
+			"Graph Id",
+			"Description"
+	);
+	print_table_header ( 'Graph', count ( $graphs ), $header_graph, 'graph' );
+
+	// print all graph IDs
+	foreach ( $graphs as $graph ) {
+		printf ( "<tr><td>%8d</td><td>%s</td></tr>\n", $graph->graphid, $graph->name );
+	}
+	print ("</tbody>\n</table>\n</div>\n") ;
+
+	print ('<div class="panel-footer">
+
+        <p>&copy; T-Mobile Polska Company | OSS development powered by Karol Preiskorn | internal use</p>
+
+      </div>') ;
+	print ("</div></body></html>") ; // end of container
+
+	// print "<h1>Alerts... agian in raw</h2>";
+		                                 // obsafe_print_r ( $alerts, FALSE, TRUE );
 } catch ( Exception $e ) {
 	// Exception in ZabbixApi catched
 	echo $e->getMessage ();

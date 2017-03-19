@@ -9,35 +9,44 @@
 <html>
 <head>
 <title>Zabbix</title>
-<script></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous"></script>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script
-	src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/af-2.1.3/b-1.2.4/b-colvis-1.2.4/fh-3.1.2/kt-2.2.0/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/af-2.1.3/b-1.2.4/b-colvis-1.2.4/fh-3.1.2/kt-2.2.0/r-2.1.1/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#alarms').DataTable( {
+        deferRender:    true,
+        scrollY:        400,
+        scrollCollapse: false,
+        scroller:       false
+    } );
+} );
+
+
+$(document).ready(function() {
+	$('#graph').DataTable({
+        deferRender:    true,
+        scrollY:        400,
+        scrollCollapse: false,
+        scroller:       false
+    } );
+} );
+</script>
+
 </head>
+
 <body>
 	<div class="container">
-	<div class="jumbotron">
-  <h1>Zabbix monitoring</h1>
-  <p>Aplikacje webowe monitoruj¹ce</p>
-  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-</div>
+		<div class="jumbotron">
+			<h1>Zabbix Alarm monitoring</h1>
+			<p>Aplikacja monitoruje alarmy z Zabbix.</p>
+			<p>
+				<a class="btn btn-primary btn-lg"
+					href="http://wrex/zabbix/zabbix.php?action=dashboard.view"
+					role="button">Zabbix Dashboard</a> <a
+					class="btn btn-primary btn-lg" href="#alarms" role="button">Alarms</a>
+				<a class="btn btn-primary btn-lg" href="#graph" role="button">Graph</a>
+
+			</p>
+		</div>
