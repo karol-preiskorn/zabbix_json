@@ -1,0 +1,19 @@
+[16-Mar-2017 11:32:52 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:52:21 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:52:24 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:52:35 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:52:35 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:55:54 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:55:54 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:55:54 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:55:54 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:55:55 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:55:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:55:58 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:55:58 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 11:58:40 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 80
+[16-Mar-2017 11:58:40 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 28
+[16-Mar-2017 12:01:46 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 61
+[16-Mar-2017 12:01:46 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 10
+[16-Mar-2017 12:03:53 UTC] PHP Notice:  Undefined index: result in D:\http\Zabbix_JSON\index.php on line 62
+[16-Mar-2017 12:03:53 UTC] PHP Warning:  Invalid argument supplied for foreach() in D:\http\Zabbix_JSON\index.php on line 14
