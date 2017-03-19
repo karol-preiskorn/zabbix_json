@@ -1,190 +1,147 @@
 <?php
-
 /**
- * Zabbix monitoring in PHP
+ * ZabbixAPI_class.php Copyright 2017 by Karol Preiskorn
  *
- * @author Karol Preiskorn
- *
- * @version 2017-04-16 KP init
- * @version 17.03.2017 14:47:16 Karol Preiskorn dodanie informacji na temat Alertów
- * @version 17.03.2017 18:07:38 Karol Preiskorn - dodanie synchronizacji
- *
- *
- * 3
- *
- * phpinfo ();
+ * @version 18.03.2017 21:35:17 Karol Preiskorn Init
+ * @version 19.03.2017 16:37:59 KPreiskorn ZabbixAPI_class.php Export to BB
  *
  */
+// load ZabbixApi
+require_once 'PhpZabbixApi-2.4.5/build/ZabbixApi.class.php';
+include 'header.php';
+
+use ZabbixApi\ZabbixApi;
+
 $uri = "http://wrex.oss.t-mobile.pl/zabbix/api_jsonrpc.php";
 $username = "inact_ro";
 $password = "Karol!123";
 /**
+ * poor print_r function
  *
- * @param unknown $in
- * @param number $indent
- * @param string $from_array
- * @return string
+ * @param unknown $val
  */
-function json_readable_encode($in, $indent = 0, $from_array = true) {
-	$_myself = __FUNCTION__;
-	$_escape = function ($str) {
-		return preg_replace ( "!([\b\t\n\r\f\"\\'])!", "\\\\\\1", $str );
-	};
-
-	$out = '';
-
-	foreach ( $in as $key => $value ) {
-		$out .= str_repeat ( "\t", $indent + 1 );
-		$out .= "\"" . $_escape ( ( string ) $key ) . "\": ";
-
-		if (is_object ( $value ) || is_array ( $value )) {
-			$out .= "\n";
-			$out .= $_myself ( $value, $indent + 1 );
-		} elseif (is_bool ( $value )) {
-			$out .= $value ? 'true' : 'false';
-		} elseif (is_null ( $value )) {
-			$out .= 'null';
-		} elseif (is_string ( $value )) {
-			$out .= "\"" . $_escape ( $value ) . "\"";
-		} else {
-			$out .= $value;
+function print_r2($val) {
+	echo '<pre>';
+	print_r ( $val );
+	echo '</pre>';
+}
+/**
+ * Better print_r function
+ */
+function obsafe_print_r($var, $return = false, $html = true, $level = 0) {
+	$spaces = "";
+	$space = $html ? "&nbsp;" : " ";
+	$newline = $html ? "<br />" : "\n";
+	for($i = 1; $i <= 6; $i ++) {
+		$spaces .= $space;
+	}
+	$tabs = $spaces;
+	for($i = 1; $i <= $level; $i ++) {
+		$tabs .= $spaces;
+	}
+	if (is_array ( $var )) {
+		$title = "Array";
+	} elseif (is_object ( $var )) {
+		$title = get_class ( $var ) . " Object";
+	}
+	$output = "<b>" . $title . "</b>" . $newline . $newline;
+	foreach ( $var as $key => $value ) {
+		if (is_array ( $value ) || is_object ( $value )) {
+			$level ++;
+			$value = obsafe_print_r ( $value, true, $html, $level );
+			$level --;
 		}
-
-		$out .= ",\n";
+		$output .= $tabs . "[" . $key . "] => [" . $value . "]" . $newline;
 	}
-
-	if (! empty ( $out )) {
-		$out = substr ( $out, 0, - 2 );
-	}
-
-	$out = str_repeat ( "\t", $indent ) . "{\n" . $out;
-	$out .= "\n" . str_repeat ( "\t", $indent ) . "}";
-
-	return $out;
+	if ($return)
+		return $output;
+	else
+		echo "<pre>" . $output . "</pre>";
 }
-
 /**
  *
- * @param unknown $array
+ * Generate bootstrap table with headers and coun of elements
+ *
+ * @param string $title
+ * @param unknown $count
+ * @param unknown $id
  */
-function expand_arr($array) {
-	foreach ( $array as $key => $value ) {
-		if (is_array ( $value )) {
-			echo "<i>" . $key . "</i>:<br>";
-			expand_arr ( $value );
-			echo "<br>\n";
-		} else {
-			echo "<i>" . $key . "</i>: " . $value . "<br>\n";
+function print_table_header($title, $count, $headers, $id) {
+	print ('<div class="panel panel-default">' . "\n") ;
+	print ('<div class="panel-heading">' . $title . ' <a href="#"> <span class="badge">' . $count . '</span></a></div>' . "\n") ;
+	print ("<table id='" . $id . "' class='table table-striped table-bordered'>" . "\n") ;
+
+	print ("<thead><tr>" . "\n") ;
+	foreach ( $headers as $header ) {
+		print ("<th>" . $header . "</th>" . "\n") ;
+	}
+	print ("</tr>\n</thead>\n<tbody>" . "\n") ;
+}
+
+try {
+	// connect to Zabbix API
+	$api = new ZabbixApi ( $uri, $username, $password );
+
+	// get all graphs
+	$alerts = $api->alertGet ();
+	// print_r2 ( $graphs [0] );
+
+	arsort ( $alerts );
+
+	$headers = array (
+			"Alert Id",
+			"Event Id",
+			"Date time",
+			"Sent to",
+			"Subject",
+			"Message"
+	);
+
+	print_table_header ( 'Alerts', count ( $alerts ), $headers, 'alarms' );
+
+	// print all alerts
+	foreach ( $alerts as $alert ) {
+		if ($alert->sendto = "karol.preiskorn@t-mobile.pl") {
+			if (strpos ( $alert->subject, "PROBLEM:" ) !== false) {
+				$alerttype = "class='warning'";
+			} else {
+				$alerttype = "class='normal'";
+			}
+			if (preg_match ( "/Original event ID: ([0-9]{4,12})/", $alert->message, $regs )) {
+				$eventid_org = "[link: <a href='#" . $regs [1] . "'>" . $regs [1] . "</a>]";
+			} else {
+				$eventid_org = "Not found Original event ID";
+			}
+			printf ( "<tr id='%s' %s><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" . "\n", $alert->eventid, $alerttype, $alert->alertid, $alert->eventid, date ( "Y-m-d h:i", $alert->clock ), $alert->sendto, $alert->subject, $alert->message . " " . $eventid_org );
 		}
 	}
-}
-/**
- *
- * @param unknown $uri
- * @param unknown $data
- * @return mixed
- */
-function json_request($uri, $data) {
-	$json_data = json_encode ( $data );
-	$c = curl_init ();
-	curl_setopt ( $c, CURLOPT_URL, $uri );
-	curl_setopt ( $c, CURLOPT_CUSTOMREQUEST, "POST" );
-	curl_setopt ( $c, CURLOPT_RETURNTRANSFER, true );
-	curl_setopt ( $c, CURLOPT_POST, $json_data );
-	curl_setopt ( $c, CURLOPT_POSTFIELDS, $json_data );
-	curl_setopt ( $c, CURLOPT_HTTPHEADER, array (
-			'Content-Type: application/json',
-			'Content-Length: ' . strlen ( $json_data )
-	) );
-	curl_setopt ( $c, CURLOPT_SSL_VERIFYPEER, false );
-	$result = curl_exec ( $c );
+	print ("</tbody>\n</table>\n</div>\n") ;
 
-	echo "<b>JSON Request:</b><br>\n";
-	echo $json_data . "<br><br>\n";
-
-	echo "<b>JSON Answer:</b><br>\n";
-	echo $result . "<br><br>\n";
-
-	/*
-	 * echo "<b>CURL Debug Info:</b><br>\n";
-	 * $debug = curl_getinfo ( $c );
-	 * echo expand_arr ( $debug ) . "<br><hr>\n";
-	 */
-
-	return json_decode ( $result, true );
-}
-/**
- *
- * @param unknown $uri
- * @param unknown $username
- * @param unknown $password
- * @return unknown
- */
-function zabbix_auth($uri, $username, $password) {
-	$data = array (
-			'jsonrpc' => "2.0",
-			'method' => "user.login",
-			'params' => array (
-					'user' => $username,
-					'password' => $password
-			),
-			'id' => "1"
+	// get all graphs
+	$graphs = $api->graphGet ();
+	$header_graph = array (
+			"Graph Id",
+			"Description"
 	);
-	$response = json_request ( $uri, $data );
-	return $response ['result'];
-}
+	print_table_header ( 'Graph', count ( $graphs ), $header_graph, 'graph' );
 
-/**
- *
- * @param unknown $uri
- * @param unknown $authtoken
- * @return unknown
- */
-function zabbix_get_hostgroups($uri, $authtoken) {
-	$data = array (
-			'jsonrpc' => "2.0",
-			'method' => "hostgroup.get",
-			'params' => array (
-					'output' => "extend",
-					'sortfield' => "name"
-			),
-			'id' => "2",
-			'auth' => $authtoken
-	);
-	$response = json_request ( $uri, $data );
-	return $response ['result'];
-}
-/**
- *
- * @param unknown $uri
- * @param unknown $authtoken
- */
-function zabbix_get_alert($uri, $authtoken) {
-	$data = array (
-			"jsonrpc" => "2.0",
-			"method" => "alert.get",
-			"params" => array (
-					"output" => "extend",
-					"actionids" => "3"
-			),
-			"auth" => $authtoken,
-			"id" => 1
-	);
-	$response = json_request ( $uri, $data );
-	return $response ['result'];
-}
+	// print all graph IDs
+	foreach ( $graphs as $graph ) {
+		printf ( "<tr><td>%8d</td><td>%s</td></tr>\n", $graph->graphid, $graph->name );
+	}
+	print ("</tbody>\n</table>\n</div>\n") ;
 
-/**
- *
- * @var Ambiguous $authtoken
- */
-print "<h1>Auth</h1>";
-$authtoken = zabbix_auth ( $uri, $username, $password );
+	print ('<div class="panel-footer">
 
-print "<h1>HostGrups</h1>";
-expand_arr ( zabbix_get_hostgroups ( $uri, $authtoken ) );
-print "<h2>json_readable_encode</h2>";
-json_readable_encode ( zabbix_get_hostgroups ( $uri, $authtoken ) );
-print "<h1>Alerts</h1>";
-expand_arr ( zabbix_get_alert ( $uri, $authtoken ) );
+        <p>&copy; T-Mobile Polska Company | OSS development powered by Karol Preiskorn | internal use</p>
+
+      </div>') ;
+	print ("</div></body></html>") ; // end of container
+
+	// print "<h1>Alerts... agian in raw</h2>";
+		                                 // obsafe_print_r ( $alerts, FALSE, TRUE );
+} catch ( Exception $e ) {
+	// Exception in ZabbixApi catched
+	echo $e->getMessage ();
+}
 ?>
