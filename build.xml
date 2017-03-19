@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="upload" default="upload">
+	<target name="upload">
+		<ftp server="inact" port="21" remotedir="/Zabbix_JSON" userid="inact" password="babilon5" passive="yes" depends="yes" binary="no">
+			<fileset dir=".">
+				<include name="**/*.php"/>
+			</fileset>
+		</ftp>
+	</target>
+	<target name="clean">
+		<delete dir="data" />
+	</target>
+    <target name="run">
+        <java jar="build/jar/HelloWorld.jar" fork="true"/>
+    </target>
+</project>

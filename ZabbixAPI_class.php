@@ -3,6 +3,7 @@
  * ZabbixAPI_class.php Copyright 2017 by Karol Preiskorn
  *
  * @varsion 18.03.2017 21:35:17 Karol Preiskorn Init
+ *
  */
 // load ZabbixApi
 require_once 'PhpZabbixApi-2.4.5/build/ZabbixApi.class.php';
