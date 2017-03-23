@@ -6,12 +6,18 @@
  * @version 19.03.2017 16:37:59 KPreiskorn ZabbixAPI_class.php Export to BB
  *
  */
-// load ZabbixApi
 require_once 'PhpZabbixApi-2.4.5/build/ZabbixApi.class.php';
 include 'header.php';
 
 use ZabbixApi\ZabbixApi;
 
+/**
+ *
+ * @todo add LDAP via uptime
+ *
+ * @var string $uri
+ *
+ */
 $uri = "http://wrex.oss.t-mobile.pl/zabbix/api_jsonrpc.php";
 $username = "inact_ro";
 $password = "Karol!123";
@@ -19,6 +25,7 @@ $password = "Karol!123";
  * poor print_r function
  *
  * @param unknown $val
+ *
  */
 function print_r2($val) {
 	echo '<pre>';
