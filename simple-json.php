@@ -6,18 +6,21 @@
  * @author Karol Preiskorn
  *
  * @version 2017-04-16 KP init
- * @version 17.03.2017 14:47:16 Karol Preiskorn dodanie informacji na temat Alertów
+ * @version 17.03.2017 14:47:16 Karol Preiskorn dodanie informacji na temat Alertï¿½w
  * @version 17.03.2017 18:07:38 Karol Preiskorn - dodanie synchronizacji
  *
  *
- * 3
+ *
  *
  * phpinfo ();
  *
  */
-$uri = "http://wrex.oss.t-mobile.pl/zabbix/api_jsonrpc.php";
-$username = "inact_ro";
-$password = "Karol!123";
+$uri = "http://zabixx";
+$username = "user";
+$password = "pass";
+
+// set passwords and uri
+include "passwords.php";
 /**
  *
  * @param unknown $in
