@@ -43,22 +43,26 @@ $(document).ready(function() {
 		<div class="jumbotron">
 			<h1>Zabbix Alarm monitoring</h1>
 			<p>Aplikacja monitoruje alarmy z Zabbix.</p>
-			<p>
-				<a class="btn btn-primary btn-lg"
-					href="http://wrex/zabbix/zabbix.php?action=dashboard.view"
-					role="button">Zabbix Dashboard</a> <a class="btn btn-lg"
-					href="#alarms" role="button">Alarms</a> <a class="btn btn-lg"
-					href="#graph" role="button">Graph</a> <a class="btn btn-lg"
-					href="simple-json.php" role="button">Simple JSON</a>
+
+			<a class="btn btn-primary btn-lg"
+				href="http://wrex/zabbix/zabbix.php?action=dashboard.view"
+				role="button">Zabbix Dashboard</a> <a class="btn btn-lg"
+				href="#alarms" role="button">Alarms</a> <a class="btn btn-lg"
+				href="#graph" role="button">Graph</a> <a class="btn btn-lg"
+				href="simple-json.php" role="button">Simple JSON</a>
 
 
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-  About
-</button>
-<div class="collapse" id="collapseExample">
-  <div class="well">
-    Aplikacja monitoruje alarmy z OSS Zabbix na serwerze wrex. Dostêp do API poprzez klasê PHP -> ZabbixApi. Opis API https://www.zabbix.com/documentation/2.2/manual/api/reference/history/get
-  </div>
-</div>
-			</p>
+			<button class="btn btn-primary" type="button" data-toggle="collapse"
+				data-target="#collapseExample" aria-expanded="false"
+				aria-controls="collapseExample">About</button>
+
+
+			<div class="collapse" id="collapseExample">
+				<div class="well">Aplikacja monitoruje alarmy z OSS Zabbix na
+					serwerze wrex. Dostï¿½p do API poprzez klasï¿½ PHP -> ZabbixApi. Opis
+					API
+					https://www.zabbix.com/documentation/2.2/manual/api/reference/history/get
+				</div>
+			</div>
+
 		</div>
