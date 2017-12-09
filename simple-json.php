@@ -8,7 +8,7 @@
  * @version 2017-04-16 KP init
  * @version 17.03.2017 14:47:16 Karol Preiskorn dodanie informacji na temat Alert�w
  * @version 17.03.2017 18:07:38 Karol Preiskorn - dodanie synchronizacji
- *
+ * @version 9 gru 2017 12:47:16 KPreiskorn simple-json.php add composer and manage password
  *
  *
  *
